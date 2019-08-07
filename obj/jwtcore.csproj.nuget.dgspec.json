@@ -60,6 +60,14 @@
               "target": "Package",
               "version": "[2.2.0, )",
               "autoReferenced": true
+            },
+            "PemUtils": {
+              "target": "Package",
+              "version": "[3.0.0.81, )"
+            },
+            "System.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "(, )"
             }
           },
           "imports": [

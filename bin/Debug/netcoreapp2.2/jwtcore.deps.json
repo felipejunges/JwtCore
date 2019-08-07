@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "55673ca410478fca5a52226f727335298572a296"
+    "signature": "026284f2a58260d5132bd99a8aa839774b638009"
   },
   "compilationOptions": {
     "defines": [
@@ -27,13 +27,25 @@
           "Microsoft.AspNetCore.App": "2.2.0",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.Extensions.Caching.Redis": "2.2.0",
-          "Microsoft.NETCore.App": "2.2.0"
+          "Microsoft.NETCore.App": "2.2.0",
+          "PemUtils": "3.0.0.81"
         },
         "runtime": {
           "jwtcore.dll": {}
         },
         "compile": {
           "jwtcore.dll": {}
+        }
+      },
+      "DerConverter/3.0.0.81": {
+        "runtime": {
+          "lib/netstandard2.0/DerConverter.dll": {
+            "assemblyVersion": "3.0.0.81",
+            "fileVersion": "3.0.0.81"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/DerConverter.dll": {}
         }
       },
       "Microsoft.Extensions.Caching.Redis/2.2.0": {
@@ -57,6 +69,20 @@
           "Microsoft.NETCore.Platforms": "2.2.0",
           "Microsoft.NETCore.Targets": "2.0.0",
           "System.Runtime": "4.3.0"
+        }
+      },
+      "PemUtils/3.0.0.81": {
+        "dependencies": {
+          "DerConverter": "3.0.0.81"
+        },
+        "runtime": {
+          "lib/netstandard2.0/PemUtils.dll": {
+            "assemblyVersion": "3.0.0.81",
+            "fileVersion": "3.0.0.81"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/PemUtils.dll": {}
         }
       },
       "runtime.native.System.Net.Security/4.3.0": {
@@ -3396,6 +3422,13 @@
       "serviceable": false,
       "sha512": ""
     },
+    "DerConverter/3.0.0.81": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pQorsmMpXB915jC25RVCI3FkuvPGKSGlVu1msajh/VxpnDNFcfrtutcQGGtB6u+3Kbh6dnqAA9m9CTVxDNew+w==",
+      "path": "derconverter/3.0.0.81",
+      "hashPath": "derconverter.3.0.0.81.nupkg.sha512"
+    },
     "Microsoft.Extensions.Caching.Redis/2.2.0": {
       "type": "package",
       "serviceable": true,
@@ -3409,6 +3442,13 @@
       "sha512": "sha512-9ZQKCWxH7Ijp9BfahvL2Zyf1cJIk8XYLF6Yjzr2yi0b2cOut/HQ31qf1ThHAgCc3WiZMdnWcfJCgN82/0UunxA==",
       "path": "microsoft.win32.primitives/4.3.0",
       "hashPath": "microsoft.win32.primitives.4.3.0.nupkg.sha512"
+    },
+    "PemUtils/3.0.0.81": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lW7YxLJlE6BhgyI+9/ffjFigsMQaEYSEMark2J0Ysc24KSRm30XwQhPC3prMXkcRks5FdrZ5YGjM3a8b8ns1vQ==",
+      "path": "pemutils/3.0.0.81",
+      "hashPath": "pemutils.3.0.0.81.nupkg.sha512"
     },
     "runtime.native.System.Net.Security/4.3.0": {
       "type": "package",

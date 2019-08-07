@@ -1,0 +1,92 @@
+{
+	"info": {
+		"_postman_id": "d9a6e97b-7e4a-41a1-b08b-b247f7fdacaa",
+		"name": "Teste JWT Localhost",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:5000/api/Values",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyIxIiwiMSJdLCJqdGkiOiI4N2ZhODQzN2I0NmI0M2JjYjkzODUzYTIyYzU5NmRhZSIsInJvbGUiOlsiQWRtaW4iLCJJcnJpdGFudGUiXSwibmJmIjoxNTY1MjA2MTAwLCJleHAiOjE1NjUyOTI1MDAsImlhdCI6MTU2NTIwNjEwMCwiaXNzIjoiRmVsaXBlIEp1bmdlcyIsImF1ZCI6Im1hbmdvcy5pbmYuYnIifQ.dvReDgLkQHfTYr-jOHohV11wCLiwuuh22YCgUjlVyQ4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/Values",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"Values"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5000/api/Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t'UserID': '1',\n\t'AccessKey': ''\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/Login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d79cb9ac-34c9-494b-a197-063fc37a24d9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "54334321-7f8e-442d-a272-0ed803fde76e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

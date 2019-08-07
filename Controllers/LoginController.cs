@@ -2,7 +2,6 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading.Tasks;
 using jwtcore.Autenticacao;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +41,7 @@ namespace jwtcore.Controllers
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
                         new Claim(JwtRegisteredClaimNames.UniqueName, usuario.UserID),
                         new Claim(ClaimTypes.Role, "Admin"),
-                        new Claim(ClaimTypes.Role, "Irritante")
+                        new Claim(ClaimTypes.Role, "Vagner-Irritante")
                     }
                 );
 

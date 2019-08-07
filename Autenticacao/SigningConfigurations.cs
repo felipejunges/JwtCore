@@ -1,5 +1,8 @@
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace jwtcore.Autenticacao
@@ -11,18 +14,63 @@ namespace jwtcore.Autenticacao
 
         public SigningConfigurations()
         {
-            using (var provider = new RSACryptoServiceProvider(2048))
+            // using (var provider = new RSACryptoServiceProvider(2048))
+            // {
+            //     Key = new RsaSecurityKey(provider.ExportParameters(true));
+            // }
+            // SigningCredentials = new SigningCredentials(Key, SecurityAlgorithms.RsaSha256Signature);
+
+            var keyString = "afsdkjasjflxswafsdklk434orqiwup3457u-34oewir4irroqwiffv48mfs";
+            Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
+            
+            SigningCredentials = new SigningCredentials(Key, SecurityAlgorithms.HmacSha256);
+        }
+
+        private string GenerateToken1()
+        {
+            // https://stackoverflow.com/questions/46202176/jwt-generation-and-validation-in-net-throws-key-is-not-supported
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var certificate = new X509Certificate2(@"C:\Users\myname\my-cert.pfx", "mypassword");
+            var securityKey = new X509SecurityKey(certificate);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Key = new RsaSecurityKey(provider.ExportParameters(true));
-            }
+                Subject = new ClaimsIdentity(),
+                Issuer = "Self",
+                IssuedAt = DateTime.Now,
+                Audience = "Others",
+                Expires = DateTime.Now.AddMinutes(30),
+                SigningCredentials = new SigningCredentials(
+                    securityKey,
+                    SecurityAlgorithms.RsaSha512Signature)
+            };
 
-            //var size = Encoding.UTF8.GetString(Key);
-            //var outroSize = size;
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
 
-            //Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MTIzNDU2Nzk4MDEyMzQ1Njc5ODAxMjM0NTY3OTgwMTIzNDU2Nzk4MDEyMzQ1Njc5ODAxMjM0NTY3OTgwMTIzNA=="));
-            //Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyJhZG1pbl9hcGlwcm9kdXRvcyIsImFkbWluX2FwaXByb2R1dG9zIl0sImp0aSI6ImI3N2U3ZTI2YTVkNjRkODY5YTAxYzBkODFiZDljNDRiIiwibmJmIjoxNTQ2ODE3MzY4LCJleHAiOjE1NDY4MTg1NjgsImlhdCI6MTU0NjgxNzM2OCwiaXNzIjoiRXhlbXBsb0lzc3VlciIsImF1ZCI6IkV4ZW1wbG9BdWRpZW5jZSJ9.pYh_-pNvPThUbDmS9Q5cfaGHrrlN-EAb8Jz8n4dhF6ddA40_kj8EuVedy_z4Q2ADMLews7mbqij7WGYsmZtfOhA2x2uxkL5w_ChOsU0_WcKlLmBed7QY4lUukizNutNlzzpIzeQe1LGqAlq5Y2xCVScfv5oghzGZ8cgXNwk7Z8PY9Ykjp0ipUBO1ara1nwGOwFzx0KVKCzj7sCoHe6pX43IQOdlviJ57EGQfu96vwvgozzS8Ppgu0rsOHkQu_fnWCfABpTX_zznUXsMLuRYDft1OWjb1zE-cq2l1APCor7vrWDRliCh-nQ-j09AGqE_7UZCNRBhLS48384sWmmx7Sw"));
+        private bool ValidateToken1(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var certificate = new X509Certificate2(@"C:\Users\myname\my-cert.pfx", "mypassword");
+            var securityKey = new X509SecurityKey(certificate);
 
-            SigningCredentials = new SigningCredentials(Key, SecurityAlgorithms.RsaSha256Signature);
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidAudience = "Others",
+                ValidIssuer = "Self",
+                IssuerSigningKey = securityKey
+            };
+
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out securityToken);
+            if (principal == null)
+                return false;
+            if (securityToken == null)
+                return false;
+
+            return true;
         }
     }
 }

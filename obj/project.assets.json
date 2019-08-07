@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.2": {
+      "DerConverter/3.0.0.81": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/DerConverter.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/DerConverter.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -2771,6 +2780,18 @@
           "lib/netstandard1.3/Newtonsoft.Json.Bson.dll": {}
         }
       },
+      "PemUtils/3.0.0.81": {
+        "type": "package",
+        "dependencies": {
+          "DerConverter": "3.0.0.81"
+        },
+        "compile": {
+          "lib/netstandard2.0/PemUtils.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/PemUtils.dll": {}
+        }
+      },
       "Remotion.Linq/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -4630,6 +4651,20 @@
     }
   },
   "libraries": {
+    "DerConverter/3.0.0.81": {
+      "sha512": "pQorsmMpXB915jC25RVCI3FkuvPGKSGlVu1msajh/VxpnDNFcfrtutcQGGtB6u+3Kbh6dnqAA9m9CTVxDNew+w==",
+      "type": "package",
+      "path": "derconverter/3.0.0.81",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "derconverter.3.0.0.81.nupkg.sha512",
+        "derconverter.nuspec",
+        "lib/net451/DerConverter.dll",
+        "lib/net471/DerConverter.dll",
+        "lib/netstandard2.0/DerConverter.dll"
+      ]
+    },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "sha512": "owAlEIUZXWSnkK8Z1c+zR47A0X6ykF4XjbPok4lQKNuciUfHLGPd6QnI+rt/8KlQ17PmF+I4S3f+m+Qe4IvViw==",
       "type": "package",
@@ -7617,6 +7652,20 @@
         "lib/netstandard1.3/Newtonsoft.Json.Bson.xml",
         "newtonsoft.json.bson.1.0.1.nupkg.sha512",
         "newtonsoft.json.bson.nuspec"
+      ]
+    },
+    "PemUtils/3.0.0.81": {
+      "sha512": "lW7YxLJlE6BhgyI+9/ffjFigsMQaEYSEMark2J0Ysc24KSRm30XwQhPC3prMXkcRks5FdrZ5YGjM3a8b8ns1vQ==",
+      "type": "package",
+      "path": "pemutils/3.0.0.81",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net451/PemUtils.dll",
+        "lib/net471/PemUtils.dll",
+        "lib/netstandard2.0/PemUtils.dll",
+        "pemutils.3.0.0.81.nupkg.sha512",
+        "pemutils.nuspec"
       ]
     },
     "Remotion.Linq/2.2.0": {
@@ -12606,7 +12655,8 @@
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.Extensions.Caching.Redis >= 2.2.0",
-      "Microsoft.NETCore.App >= 2.2.0"
+      "Microsoft.NETCore.App >= 2.2.0",
+      "PemUtils >= 3.0.0.81"
     ]
   },
   "packageFolders": {
@@ -12669,6 +12719,10 @@
             "target": "Package",
             "version": "[2.2.0, )",
             "autoReferenced": true
+          },
+          "PemUtils": {
+            "target": "Package",
+            "version": "[3.0.0.81, )"
           }
         },
         "imports": [
