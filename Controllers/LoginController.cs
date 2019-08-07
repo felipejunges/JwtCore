@@ -45,8 +45,8 @@ namespace jwtcore.Controllers
                     }
                 );
 
-                DateTime dataCriacao = DateTime.Now;
-                DateTime dataExpiracao = dataCriacao + TimeSpan.FromHours(tokenConfigurations.Hours);
+                var dataCriacao = DateTime.Now;
+                var dataExpiracao = dataCriacao + TimeSpan.FromHours(tokenConfigurations.Hours);
 
                 var handler = new JwtSecurityTokenHandler();
                 var securityToken = handler.CreateToken(new SecurityTokenDescriptor

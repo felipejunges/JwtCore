@@ -31,7 +31,9 @@ namespace jwtcore
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddDistributedRedisCache(r => { r.Configuration = Configuration["redis:connectionString"]; });
 
-            var signingConfigurations = new SigningConfigurations();
+            string keyString = Configuration["TokenConfigurations:Key"].ToString();
+
+            var signingConfigurations = new SigningConfigurations(keyString);
             services.AddSingleton(signingConfigurations);
 
             var tokenConfigurations = new TokenConfigurations();
