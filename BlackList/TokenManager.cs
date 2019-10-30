@@ -1,11 +1,11 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using jwtcore.Autenticacao;
+using JwtCore.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace jwtcore.BlackList
 {

@@ -1,11 +1,7 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Principal;
-using jwtcore.Autenticacao;
+using JwtCore.Models;
+using JwtCore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace jwtcore.Controllers
 {
@@ -13,59 +9,27 @@ namespace jwtcore.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        //ITokenManager _tokenManager;
-
-        // public LoginController(ITokenManager tokenManager)
-        // {
-        //     _tokenManager = tokenManager;
-        // }
-
         [AllowAnonymous]
         [HttpPost]
-        public object Post(
-            [FromBody]User usuario,
-            [FromServices]SigningConfigurations signingConfigurations,
-            [FromServices]TokenConfigurations tokenConfigurations)
+        public object Post([FromBody]User usuario, [FromServices] JwtService jwtService)
         {
             bool credenciaisValidas = false;
             if (usuario != null && !string.IsNullOrWhiteSpace(usuario.UserID))
             {
                 credenciaisValidas = usuario.UserID == "1";
             }
-            
+
             if (credenciaisValidas)
             {
-                ClaimsIdentity identity = new ClaimsIdentity(
-                    new GenericIdentity(usuario.UserID, "Login"),
-                    new[] {
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, usuario.UserID),
-                        new Claim(ClaimTypes.Role, "Admin"),
-                        new Claim(ClaimTypes.Role, "Vagner-Irritante")
-                    }
-                );
-
-                var dataCriacao = DateTime.Now;
-                var dataExpiracao = dataCriacao + TimeSpan.FromHours(tokenConfigurations.Hours);
-
-                var handler = new JwtSecurityTokenHandler();
-                var securityToken = handler.CreateToken(new SecurityTokenDescriptor
-                {
-                    Issuer = tokenConfigurations.Issuer,
-                    Audience = tokenConfigurations.Audience,
-                    SigningCredentials = signingConfigurations.SigningCredentials,
-                    Subject = identity,
-                    NotBefore = dataCriacao,
-                    Expires = dataExpiracao
-                });
-                var token = handler.WriteToken(securityToken);
+                var userAuth = jwtService.CriarToken(usuario);
 
                 return new
                 {
                     authenticated = true,
-                    created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
-                    expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-                    accessToken = token,
+                    created = userAuth.Create.ToString("yyyy-MM-dd HH:mm:ss"),
+                    expiration = userAuth.Expiration.ToString("yyyy-MM-dd HH:mm:ss"),
+                    accessToken = userAuth.Token,
+                    refreshToken = userAuth.RefreshToken,
                     message = "OK"
                 };
             }
@@ -78,12 +42,27 @@ namespace jwtcore.Controllers
                 };
             }
         }
-        
-        //[HttpPost("tokens/cancel")]
-        //public async Task<IActionResult> CancelAccessToken()
-        //{
-        //await _tokenManager.DeactivateCurrentAsync();
-        //    return NoContent();
-        //}
+
+        [HttpPost]
+		[AllowAnonymous]
+        [Route("Refresh")]
+		public IActionResult RefreshToken([FromServices] JwtService jwtService, [FromBody] User usuario, string authenticationToken, string refreshToken)
+		{
+			var principal = jwtService.GetPrincipalFromExpiredToken(authenticationToken);
+			var username = principal.Identity.Name; //this is mapped to the Name claim by default
+
+			//if (user == null || user.RefreshToken != refreshToken) return BadRequest();
+
+            var userAuth = jwtService.CriarToken(usuario);
+
+			//user.RefreshToken = newRefreshToken;
+			//await _context.SaveChangesAsync();
+
+			return new ObjectResult(new
+			{
+				accessToken = userAuth.Token,
+				refreshToken = userAuth.RefreshToken
+			});
+		}
     }
 }

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d9a6e97b-7e4a-41a1-b08b-b247f7fdacaa",
+		"_postman_id": "b5a68820-a061-4388-aee4-b4adc993e67c",
 		"name": "Teste JWT Localhost",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13,7 +13,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyIxIiwiMSJdLCJqdGkiOiI4N2ZhODQzN2I0NmI0M2JjYjkzODUzYTIyYzU5NmRhZSIsInJvbGUiOlsiQWRtaW4iLCJJcnJpdGFudGUiXSwibmJmIjoxNTY1MjA2MTAwLCJleHAiOjE1NjUyOTI1MDAsImlhdCI6MTU2NTIwNjEwMCwiaXNzIjoiRmVsaXBlIEp1bmdlcyIsImF1ZCI6Im1hbmdvcy5pbmYuYnIifQ.dvReDgLkQHfTYr-jOHohV11wCLiwuuh22YCgUjlVyQ4",
+							"value": "eyJhbGcdiOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyIxIiwiMSJdLCJqdGkiOiI4ZmE2MDU3MDhlMWU0YmUwYjJlMTViMmU3NWVhZDY1OCIsInJvbGUiOlsiQWRtaW4iLCJHZXJlbnRlIl0sIm5iZiI6MTU3MjQ2NDUwOSwiZXhwIjoxNTcyNDY4MTA5LCJpYXQiOjE1NzI0NjQ1MDksImlzcyI6IkZlbGlwZSBKdW5nZXMiLCJhdWQiOiJtYW5nb3MuaW5mLmJyIn0.10zM0B4XK87ES3euzWf01vhBkCQx9tbKmmcVmicd8VM",
 							"type": "string"
 						}
 					]
@@ -49,7 +49,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t'UserID': '1',\n\t'AccessKey': ''\n}"
+					"raw": "{\n\t'UserID': '1',\n\t'Login': 'felipe',\n\t'AccessKey': ''\n}"
 				},
 				"url": {
 					"raw": "http://localhost:5000/api/Login",
@@ -61,6 +61,37 @@
 					"path": [
 						"api",
 						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5000/api/Refresh",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t'UserID': '1',\n\t'Login': 'felipe',\n\t'AccessKey': ''\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/Refresh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"Refresh"
 					]
 				}
 			},
@@ -88,5 +119,6 @@
 				]
 			}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }

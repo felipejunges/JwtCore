@@ -1,4 +1,4 @@
-namespace jwtcore.Autenticacao
+namespace JwtCore.Configuration
 {
     public class TokenConfigurations
     {
