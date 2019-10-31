@@ -13,7 +13,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGcdiOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyIxIiwiMSJdLCJqdGkiOiI4ZmE2MDU3MDhlMWU0YmUwYjJlMTViMmU3NWVhZDY1OCIsInJvbGUiOlsiQWRtaW4iLCJHZXJlbnRlIl0sIm5iZiI6MTU3MjQ2NDUwOSwiZXhwIjoxNTcyNDY4MTA5LCJpYXQiOjE1NzI0NjQ1MDksImlzcyI6IkZlbGlwZSBKdW5nZXMiLCJhdWQiOiJtYW5nb3MuaW5mLmJyIn0.10zM0B4XK87ES3euzWf01vhBkCQx9tbKmmcVmicd8VM",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyJmZWxpcGUiLCIxIl0sImp0aSI6ImFlNmMwYmY3ZjgxYzQzYWY4NTk0OWI5Y2YxODU3NGEyIiwic3ViIjoiRmVsaXBlIEp1bmdlcyIsInJvbGUiOlsiQWRtaW4iLCJHZXJlbnRlIl0sIm5iZiI6MTU3MjUzMDE5OCwiZXhwIjoxNTcyNTMwMjU4LCJpYXQiOjE1NzI1MzAxOTgsImlzcyI6IkZlbGlwZSBKdW5nZXMiLCJhdWQiOiJtYW5nb3MuaW5mLmJyIn0.0GKxj5AAi9dphp-vFRqtfSNB2jjRV-PFl6Y4QlztLv8",
 							"type": "string"
 						}
 					]
@@ -49,10 +49,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t'UserID': '1',\n\t'Login': 'felipe',\n\t'AccessKey': ''\n}"
+					"raw": "{\n\t'UsuarioId': 1,\n\t'Login': 'felipe',\n\t'AccessKey': ''\n}"
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/Login",
+					"raw": "http://localhost:5000/api/Login/Login",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -60,6 +60,7 @@
 					"port": "5000",
 					"path": [
 						"api",
+						"Login",
 						"Login"
 					]
 				}
@@ -80,10 +81,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t'UserID': '1',\n\t'Login': 'felipe',\n\t'AccessKey': ''\n}"
+					"raw": "{\n\t'UsuarioId': 1,\n\t'Login': 'felipe',\n\t'AuthenticationToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyJmZWxpcGUiLCIxIl0sImp0aSI6Ijg2ZTRlOWEzMWQzNzRmYzJhYWMwMjBkNDEyNTUyYjgzIiwic3ViIjoiRmVsaXBlIEp1bmdlcyIsInJvbGUiOlsiQWRtaW4iLCJHZXJlbnRlIl0sIm5iZiI6MTU3MjUzMDEwMywiZXhwIjoxNTcyNTMwMTYzLCJpYXQiOjE1NzI1MzAxMDMsImlzcyI6IkZlbGlwZSBKdW5nZXMiLCJhdWQiOiJtYW5nb3MuaW5mLmJyIn0.hahjBxDZqSnw_Qb6kQKhfyL8fsiAzZN65zTju3EPySw',\n\t'RefreshToken': 'WnXvviUWAvmM5yuOvE1LBCU8okq2Anc5ReshxsLVyF0='\n}"
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/Refresh",
+					"raw": "http://localhost:5000/api/Login/Refresh",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -91,6 +92,7 @@
 					"port": "5000",
 					"path": [
 						"api",
+						"Login",
 						"Refresh"
 					]
 				}
