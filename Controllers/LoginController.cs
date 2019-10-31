@@ -1,3 +1,4 @@
+using JwtCore.Data;
 using JwtCore.Models;
 using JwtCore.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -11,25 +12,25 @@ namespace jwtcore.Controllers
     {
         [AllowAnonymous]
         [HttpPost]
-        public object Post([FromBody]User usuario, [FromServices] JwtService jwtService)
+        [Route("Login")]
+        public object Login([FromBody]UsuarioLoginDTO usuarioLogin, [FromServices]JwtService jwtService, [FromServices]UsuarioRepository repository)
         {
-            bool credenciaisValidas = false;
-            if (usuario != null && !string.IsNullOrWhiteSpace(usuario.UserID))
-            {
-                credenciaisValidas = usuario.UserID == "1";
-            }
+            var usuario = repository.Get(usuarioLogin.UsuarioId);
 
-            if (credenciaisValidas)
+            if (usuario != null)
             {
-                var userAuth = jwtService.CriarToken(usuario);
+                var jwtToken = jwtService.CriarToken(usuario);
+
+                usuario.RefreshToken = jwtToken.RefreshToken;
+                repository.Save(usuario);
 
                 return new
                 {
                     authenticated = true,
-                    created = userAuth.Create.ToString("yyyy-MM-dd HH:mm:ss"),
-                    expiration = userAuth.Expiration.ToString("yyyy-MM-dd HH:mm:ss"),
-                    accessToken = userAuth.Token,
-                    refreshToken = userAuth.RefreshToken,
+                    created = jwtToken.Create.ToString("yyyy-MM-dd HH:mm:ss"),
+                    expiration = jwtToken.Expiration.ToString("yyyy-MM-dd HH:mm:ss"),
+                    accessToken = jwtToken.Token,
+                    refreshToken = jwtToken.RefreshToken,
                     message = "OK"
                 };
             }
@@ -46,22 +47,25 @@ namespace jwtcore.Controllers
         [HttpPost]
 		[AllowAnonymous]
         [Route("Refresh")]
-		public IActionResult RefreshToken([FromServices] JwtService jwtService, [FromBody] User usuario, string authenticationToken, string refreshToken)
+		public IActionResult RefreshToken([FromServices]JwtService jwtService, [FromServices]UsuarioRepository repository, [FromBody]UsuarioRefreshDTO usuarioRefresh)
 		{
-			var principal = jwtService.GetPrincipalFromExpiredToken(authenticationToken);
+			var principal = jwtService.GetPrincipalFromExpiredToken(usuarioRefresh.AuthenticationToken);
 			var username = principal.Identity.Name; //this is mapped to the Name claim by default
 
-			//if (user == null || user.RefreshToken != refreshToken) return BadRequest();
+            var usuario = repository.Get(usuarioRefresh.UsuarioId);
 
-            var userAuth = jwtService.CriarToken(usuario);
+			if (usuario == null || usuario.Login != username || usuario.RefreshToken != usuarioRefresh.RefreshToken)
+                return BadRequest();
 
-			//user.RefreshToken = newRefreshToken;
-			//await _context.SaveChangesAsync();
+            var jwtToken = jwtService.CriarToken(usuario);
+
+			usuario.RefreshToken = jwtToken.RefreshToken;
+			repository.Save(usuario);
 
 			return new ObjectResult(new
 			{
-				accessToken = userAuth.Token,
-				refreshToken = userAuth.RefreshToken
+				accessToken = jwtToken.Token,
+				refreshToken = jwtToken.RefreshToken
 			});
 		}
     }

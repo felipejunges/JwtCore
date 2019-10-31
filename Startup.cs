@@ -1,5 +1,6 @@
 ﻿using System;
 using JwtCore.Configuration;
+using JwtCore.Data;
 using JwtCore.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +31,7 @@ namespace jwtcore
             services.AddSingleton(tokenConfigurations);
 
             services.AddScoped<JwtService>();
+            services.AddScoped<UsuarioRepository>();
 
             string keyString = Configuration["TokenConfigurations:Key"].ToString();
 

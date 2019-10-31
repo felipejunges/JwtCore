@@ -2,9 +2,9 @@ using System;
 
 namespace JwtCore.Models
 {
-    public class UserAuth
+    public class JwtToken
     {
-        public UserAuth(string token, string refreshToken, DateTime create, DateTime expiration)
+        public JwtToken(string token, string refreshToken, DateTime create, DateTime expiration)
         {
             Token = token;
             RefreshToken = refreshToken;
@@ -20,9 +20,9 @@ namespace JwtCore.Models
 
         public DateTime Expiration { get; private set; }
 
-        public static UserAuth Criar(string token, string refreshToken, DateTime create, DateTime expiration)
+        public static JwtToken Criar(string token, string refreshToken, DateTime create, DateTime expiration)
         {
-            return new UserAuth(token, refreshToken, create, expiration);
+            return new JwtToken(token, refreshToken, create, expiration);
         }
     }
 }

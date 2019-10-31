@@ -20,13 +20,13 @@ namespace JwtCore.Services
             _tokenConfigurations = tokenConfigurations;
         }
 
-        public UserAuth CriarToken(User usuario)
+        public JwtToken CriarToken(UsuarioEntity usuario)
         {
             ClaimsIdentity identity = new ClaimsIdentity(
                     new GenericIdentity(usuario.Login),
                     new[] {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, usuario.UserID),
+                        new Claim(JwtRegisteredClaimNames.UniqueName, usuario.UsuarioId.ToString()),
                         new Claim(JwtRegisteredClaimNames.Sub, "Felipe Junges"),
                         new Claim(ClaimTypes.Role, "Admin"),
                         new Claim(ClaimTypes.Role, "Gerente")
@@ -34,8 +34,7 @@ namespace JwtCore.Services
                 );
 
             var dataCriacao = DateTime.Now;
-            var dataExpiracao = dataCriacao + TimeSpan.FromHours(_tokenConfigurations.Hours);
-            //dataExpiracao = dataCriacao + TimeSpan.FromSeconds(45);
+            var dataExpiracao = dataCriacao + TimeSpan.FromMinutes(_tokenConfigurations.Minutes);
 
             var handler = new JwtSecurityTokenHandler();
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor
@@ -51,7 +50,7 @@ namespace JwtCore.Services
 
             var refreshToken = GenerateRefreshToken();
 
-            return UserAuth.Criar(token, refreshToken, dataCriacao, dataExpiracao);
+            return JwtToken.Criar(token, refreshToken, dataCriacao, dataExpiracao);
         }
 
         private string GenerateRefreshToken()
