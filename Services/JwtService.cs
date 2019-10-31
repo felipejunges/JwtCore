@@ -34,7 +34,7 @@ namespace JwtCore.Services
                 );
 
             var dataCriacao = DateTime.Now;
-            var dataExpiracao = dataCriacao + TimeSpan.FromMinutes(_tokenConfigurations.Minutes);
+            var dataExpiracao = dataCriacao + TimeSpan.FromHours(_tokenConfigurations.Hours);
 
             var handler = new JwtSecurityTokenHandler();
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor

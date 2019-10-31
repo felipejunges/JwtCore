@@ -30,13 +30,11 @@ namespace jwtcore
                     .Configure(tokenConfigurations);
             services.AddSingleton(tokenConfigurations);
 
+            var signingConfigurations = new SigningConfigurations(tokenConfigurations.Key);
+            services.AddSingleton(signingConfigurations);
+
             services.AddScoped<JwtService>();
             services.AddScoped<UsuarioRepository>();
-
-            string keyString = Configuration["TokenConfigurations:Key"].ToString();
-
-            var signingConfigurations = new SigningConfigurations(keyString);
-            services.AddSingleton(signingConfigurations);
 
             services.AddAuthentication(authOptions =>
             {

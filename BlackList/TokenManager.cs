@@ -38,7 +38,7 @@ namespace jwtcore.BlackList
             => await _cache.SetStringAsync(GetKey(token),
                 " ", new DistributedCacheEntryOptions
                 {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(_jwtOptions.Value.Minutes)
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(_jwtOptions.Value.Hours)
                 });
     
         private string GetCurrentAsync()
