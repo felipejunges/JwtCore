@@ -1,11 +1,8 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Principal;
-using jwtcore.Autenticacao;
+using JwtCore.Data;
+using JwtCore.Models;
+using JwtCore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace jwtcore.Controllers
 {
@@ -13,59 +10,27 @@ namespace jwtcore.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        //ITokenManager _tokenManager;
-
-        // public LoginController(ITokenManager tokenManager)
-        // {
-        //     _tokenManager = tokenManager;
-        // }
-
         [AllowAnonymous]
         [HttpPost]
-        public object Post(
-            [FromBody]User usuario,
-            [FromServices]SigningConfigurations signingConfigurations,
-            [FromServices]TokenConfigurations tokenConfigurations)
+        [Route("Login")]
+        public object Login([FromBody]UsuarioLoginDTO usuarioLogin, [FromServices]JwtService jwtService, [FromServices]UsuarioRepository repository)
         {
-            bool credenciaisValidas = false;
-            if (usuario != null && !string.IsNullOrWhiteSpace(usuario.UserID))
-            {
-                credenciaisValidas = usuario.UserID == "1";
-            }
-            
-            if (credenciaisValidas)
-            {
-                ClaimsIdentity identity = new ClaimsIdentity(
-                    new GenericIdentity(usuario.UserID, "Login"),
-                    new[] {
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, usuario.UserID),
-                        new Claim(ClaimTypes.Role, "Admin"),
-                        new Claim(ClaimTypes.Role, "Vagner-Irritante")
-                    }
-                );
+            var usuario = repository.Get(usuarioLogin.UsuarioId);
 
-                var dataCriacao = DateTime.Now;
-                var dataExpiracao = dataCriacao + TimeSpan.FromHours(tokenConfigurations.Hours);
+            if (usuario != null)
+            {
+                var jwtToken = jwtService.CriarToken(usuario);
 
-                var handler = new JwtSecurityTokenHandler();
-                var securityToken = handler.CreateToken(new SecurityTokenDescriptor
-                {
-                    Issuer = tokenConfigurations.Issuer,
-                    Audience = tokenConfigurations.Audience,
-                    SigningCredentials = signingConfigurations.SigningCredentials,
-                    Subject = identity,
-                    NotBefore = dataCriacao,
-                    Expires = dataExpiracao
-                });
-                var token = handler.WriteToken(securityToken);
+                usuario.RefreshToken = jwtToken.RefreshToken;
+                repository.Save(usuario);
 
                 return new
                 {
                     authenticated = true,
-                    created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
-                    expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-                    accessToken = token,
+                    created = jwtToken.Create.ToString("yyyy-MM-dd HH:mm:ss"),
+                    expiration = jwtToken.Expiration.ToString("yyyy-MM-dd HH:mm:ss"),
+                    accessToken = jwtToken.Token,
+                    refreshToken = jwtToken.RefreshToken,
                     message = "OK"
                 };
             }
@@ -78,12 +43,30 @@ namespace jwtcore.Controllers
                 };
             }
         }
-        
-        //[HttpPost("tokens/cancel")]
-        //public async Task<IActionResult> CancelAccessToken()
-        //{
-        //await _tokenManager.DeactivateCurrentAsync();
-        //    return NoContent();
-        //}
+
+        [HttpPost]
+		[AllowAnonymous]
+        [Route("Refresh")]
+		public IActionResult RefreshToken([FromServices]JwtService jwtService, [FromServices]UsuarioRepository repository, [FromBody]UsuarioRefreshDTO usuarioRefresh)
+		{
+			var principal = jwtService.GetPrincipalFromExpiredToken(usuarioRefresh.AuthenticationToken);
+			var username = principal.Identity.Name; //this is mapped to the Name claim by default
+
+            var usuario = repository.Get(usuarioRefresh.UsuarioId);
+
+			if (usuario == null || usuario.Login != username || usuario.RefreshToken != usuarioRefresh.RefreshToken)
+                return BadRequest();
+
+            var jwtToken = jwtService.CriarToken(usuario);
+
+			usuario.RefreshToken = jwtToken.RefreshToken;
+			repository.Save(usuario);
+
+			return new ObjectResult(new
+			{
+				accessToken = jwtToken.Token,
+				refreshToken = jwtToken.RefreshToken
+			});
+		}
     }
 }

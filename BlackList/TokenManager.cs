@@ -1,11 +1,11 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using jwtcore.Autenticacao;
+using JwtCore.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace jwtcore.BlackList
 {
@@ -38,7 +38,7 @@ namespace jwtcore.BlackList
             => await _cache.SetStringAsync(GetKey(token),
                 " ", new DistributedCacheEntryOptions
                 {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(_jwtOptions.Value.Hours)
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(_jwtOptions.Value.Minutes)
                 });
     
         private string GetCurrentAsync()

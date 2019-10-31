@@ -1,16 +1,15 @@
 ﻿using System;
-using System.IO;
-using jwtcore.Autenticacao;
+using JwtCore.Configuration;
+using JwtCore.Data;
+using JwtCore.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace jwtcore
 {
@@ -23,24 +22,21 @@ namespace jwtcore
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddTransient<TokenManagerMiddleware>();
-            //services.AddTransient<ITokenManager, TokenManager>();
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddDistributedRedisCache(r => { r.Configuration = Configuration["redis:connectionString"]; });
-
-            string keyString = Configuration["TokenConfigurations:Key"].ToString();
-
-            var signingConfigurations = new SigningConfigurations(keyString);
-            services.AddSingleton(signingConfigurations);
-
             var tokenConfigurations = new TokenConfigurations();
             new ConfigureFromConfigurationOptions<TokenConfigurations>(
                 Configuration.GetSection("TokenConfigurations"))
                     .Configure(tokenConfigurations);
             services.AddSingleton(tokenConfigurations);
+
+            services.AddScoped<JwtService>();
+            services.AddScoped<UsuarioRepository>();
+
+            string keyString = Configuration["TokenConfigurations:Key"].ToString();
+
+            var signingConfigurations = new SigningConfigurations(keyString);
+            services.AddSingleton(signingConfigurations);
 
             services.AddAuthentication(authOptions =>
             {
@@ -91,7 +87,6 @@ namespace jwtcore
             }
 
             app.UseAuthentication();
-            //app.UseMiddleware<TokenManagerMiddleware>();
             app.UseMvc();
         }
     }
