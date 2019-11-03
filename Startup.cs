@@ -15,6 +15,8 @@ namespace jwtcore
 {
     public class Startup
     {
+        private readonly string _allowSpecificOrigins = "AllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -70,6 +72,17 @@ namespace jwtcore
                     .RequireAuthenticatedUser().Build());
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(_allowSpecificOrigins,
+                builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+                });
+            });
+
             services.AddControllers();
         }
 
@@ -86,6 +99,7 @@ namespace jwtcore
                 app.UseHttpsRedirection();
             }
 
+            app.UseCors(_allowSpecificOrigins);
             app.UseRouting();
 
             app.UseAuthorization();

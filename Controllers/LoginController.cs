@@ -2,6 +2,7 @@ using JwtCore.Data;
 using JwtCore.Models;
 using JwtCore.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace jwtcore.Controllers
@@ -13,6 +14,7 @@ namespace jwtcore.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
+        [EnableCors("AllowSpecificOrigins")]
         public object Login([FromBody]UsuarioLoginDTO usuarioLogin, [FromServices]JwtService jwtService, [FromServices]UsuarioRepository repository)
         {
             var usuario = repository.Get(usuarioLogin.UsuarioId);
@@ -47,7 +49,8 @@ namespace jwtcore.Controllers
         [HttpPost]
 		[AllowAnonymous]
         [Route("Refresh")]
-		public IActionResult RefreshToken([FromServices]JwtService jwtService, [FromServices]UsuarioRepository repository, [FromBody]UsuarioRefreshDTO usuarioRefresh)
+        [EnableCors("AllowSpecificOrigins")]
+        public IActionResult RefreshToken([FromServices]JwtService jwtService, [FromServices]UsuarioRepository repository, [FromBody]UsuarioRefreshDTO usuarioRefresh)
 		{
 			var principal = jwtService.GetPrincipalFromExpiredToken(usuarioRefresh.AuthenticationToken);
 			var username = principal.Identity.Name; //this is mapped to the Name claim by default

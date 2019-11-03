@@ -1,19 +1,19 @@
 {
 	"info": {
-		"_postman_id": "b5a68820-a061-4388-aee4-b4adc993e67c",
+		"_postman_id": "a9ebf94a-36d0-43fc-b66f-5c156784aaf4",
 		"name": "Teste JWT Localhost",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "http://localhost:5000/api/Values",
+			"name": "https://api.mangos.inf.br/api/Values",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyJmZWxpcGUiLCIxIl0sImp0aSI6ImFlNmMwYmY3ZjgxYzQzYWY4NTk0OWI5Y2YxODU3NGEyIiwic3ViIjoiRmVsaXBlIEp1bmdlcyIsInJvbGUiOlsiQWRtaW4iLCJHZXJlbnRlIl0sIm5iZiI6MTU3MjUzMDE5OCwiZXhwIjoxNTcyNTMwMjU4LCJpYXQiOjE1NzI1MzAxOTgsImlzcyI6IkZlbGlwZSBKdW5nZXMiLCJhdWQiOiJtYW5nb3MuaW5mLmJyIn0.0GKxj5AAi9dphp-vFRqtfSNB2jjRV-PFl6Y4QlztLv8",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyJmZWxpcGUiLCIxIl0sImp0aSI6IjNjM2E2YWExMTQyNDRlNTlhZDQ4NzVkNWZlNTk1YTgwIiwic3ViIjoiRmVsaXBlIEp1bmdlcyIsInJvbGUiOlsiQWRtaW4iLCJHZXJlbnRlIl0sIm5iZiI6MTU3Mjc0MTQzOSwiZXhwIjoxNTcyNzQ1MDM5LCJpYXQiOjE1NzI3NDE0MzksImlzcyI6IkZlbGlwZSBKdW5nZXMiLCJhdWQiOiJtYW5nb3MuaW5mLmJyIn0.glMY03nKDQJtdE8pcUBVbC3vbJs69c_a5ZE4DwO2j_E",
 							"type": "string"
 						}
 					]
@@ -21,12 +21,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/Values",
-					"protocol": "http",
+					"raw": "https://api.mangos.inf.br/api/Values",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"api",
+						"mangos",
+						"inf",
+						"br"
 					],
-					"port": "5000",
 					"path": [
 						"api",
 						"Values"
@@ -36,7 +38,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:5000/api/Login",
+			"name": "https://api.mangos.inf.br/api/Login/Login",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -49,15 +51,22 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t'UsuarioId': 1,\n\t'Login': 'felipe',\n\t'AccessKey': ''\n}"
+					"raw": "{\n\t\"UsuarioId\": 1,\n\t\"Login\": \"felipe\",\n\t\"AccessKey\": \"oi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/Login/Login",
-					"protocol": "http",
+					"raw": "https://api.mangos.inf.br/api/Login/Login",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"api",
+						"mangos",
+						"inf",
+						"br"
 					],
-					"port": "5000",
 					"path": [
 						"api",
 						"Login",
@@ -68,7 +77,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:5000/api/Refresh",
+			"name": "https://api.mangos.inf.br/api/Login/Refresh",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -81,15 +90,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t'UsuarioId': 1,\n\t'Login': 'felipe',\n\t'AuthenticationToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyJmZWxpcGUiLCIxIl0sImp0aSI6Ijg2ZTRlOWEzMWQzNzRmYzJhYWMwMjBkNDEyNTUyYjgzIiwic3ViIjoiRmVsaXBlIEp1bmdlcyIsInJvbGUiOlsiQWRtaW4iLCJHZXJlbnRlIl0sIm5iZiI6MTU3MjUzMDEwMywiZXhwIjoxNTcyNTMwMTYzLCJpYXQiOjE1NzI1MzAxMDMsImlzcyI6IkZlbGlwZSBKdW5nZXMiLCJhdWQiOiJtYW5nb3MuaW5mLmJyIn0.hahjBxDZqSnw_Qb6kQKhfyL8fsiAzZN65zTju3EPySw',\n\t'RefreshToken': 'WnXvviUWAvmM5yuOvE1LBCU8okq2Anc5ReshxsLVyF0='\n}"
+					"raw": "{\n\t\"UsuarioId\": 1,\n\t\"Login\": \"felipe\",\n\t\"AuthenticationToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyJmZWxpcGUiLCIxIl0sImp0aSI6IjNjM2E2YWExMTQyNDRlNTlhZDQ4NzVkNWZlNTk1YTgwIiwic3ViIjoiRmVsaXBlIEp1bmdlcyIsInJvbGUiOlsiQWRtaW4iLCJHZXJlbnRlIl0sIm5iZiI6MTU3Mjc0MTQzOSwiZXhwIjoxNTcyNzQ1MDM5LCJpYXQiOjE1NzI3NDE0MzksImlzcyI6IkZlbGlwZSBKdW5nZXMiLCJhdWQiOiJtYW5nb3MuaW5mLmJyIn0.glMY03nKDQJtdE8pcUBVbC3vbJs69c_a5ZE4DwO2j_E\",\n\t\"RefreshToken\": \"T3+6otmsYhXFtiRZ/UIaIb8WUbH7ZClyFA0blcD0aJk=\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/Login/Refresh",
-					"protocol": "http",
+					"raw": "https://api.mangos.inf.br/api/Login/Refresh",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"api",
+						"mangos",
+						"inf",
+						"br"
 					],
-					"port": "5000",
 					"path": [
 						"api",
 						"Login",
