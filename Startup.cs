@@ -1,20 +1,22 @@
-﻿using System;
-using JwtCore.Configuration;
+﻿using JwtCore.Configuration;
 using JwtCore.Data;
 using JwtCore.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace jwtcore
 {
     public class Startup
     {
+        private readonly string _allowSpecificOrigins = "AllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -35,6 +37,8 @@ namespace jwtcore
 
             services.AddScoped<JwtService>();
             services.AddScoped<UsuarioRepository>();
+
+            services.AddMemoryCache();
 
             services.AddAuthentication(authOptions =>
             {
@@ -68,11 +72,22 @@ namespace jwtcore
                     .RequireAuthenticatedUser().Build());
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddCors(options =>
+            {
+                options.AddPolicy(_allowSpecificOrigins,
+                builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+                });
+            });
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -84,8 +99,16 @@ namespace jwtcore
                 app.UseHttpsRedirection();
             }
 
+            app.UseCors(_allowSpecificOrigins);
+            app.UseRouting();
+
+            app.UseAuthorization();
             app.UseAuthentication();
-            app.UseMvc();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
