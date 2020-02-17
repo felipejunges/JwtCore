@@ -63,15 +63,6 @@ namespace jwtcore
                 paramsValidation.ClockSkew = TimeSpan.Zero;
             });
 
-            // Ativa o uso do token como forma de autorizar o acesso
-            // a recursos deste projeto
-            services.AddAuthorization(auth =>
-            {
-                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser().Build());
-            });
-
             services.AddCors(options =>
             {
                 options.AddPolicy(_allowSpecificOrigins,
@@ -81,6 +72,15 @@ namespace jwtcore
                     builder.AllowAnyMethod();
                     builder.AllowAnyOrigin();
                 });
+            });
+
+            // Ativa o uso do token como forma de autorizar o acesso
+            // a recursos deste projeto
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build());
             });
 
             services.AddControllers();
@@ -99,11 +99,11 @@ namespace jwtcore
                 app.UseHttpsRedirection();
             }
 
-            app.UseCors(_allowSpecificOrigins);
             app.UseRouting();
+            app.UseCors(_allowSpecificOrigins);
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
